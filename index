@@ -1,0 +1,119 @@
+<html>
+<head>
+  <title>OSA</title>
+  <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div id="login_div" class="main-div">
+    <h3>Online Student Attendance Management</h3>
+    <input type="email" placeholder="Email..." id="email_field" />
+    <input type="password" placeholder="Password..." id="password_field" />
+
+    <button onclick="login()">Login</button>
+  </div>
+
+
+  <div id="user_div" class="loggedin-div">
+    <h3>Welcome User</h3>
+    <p id="user_para">Welcome to Firebase web login Example. You're currently logged in.</p>
+
+    <div>
+      <p>
+        <button onClick="connect()">CONNECT</button>
+      </p>
+    </div>
+
+    <div>
+      <p>
+        <button onclick="generateCode()">GENERATE CODE</button>
+      </p>
+      <p>
+        <input id="codeTxt" placeholder="CODE"></input>
+      </p>
+    </div>
+
+    <div>
+      <p>
+        <button onClick="sendCode()">SEND CODE</button>
+      </p>
+    </div>
+
+    <div>
+      <p>
+        <button onClick="startRegistration()">START REGISTRATION</button>
+      </p>
+    </div>
+
+
+
+    <button onclick="logout()">Logout</button>
+  </div>
+
+
+<script>
+  //javascript for controlling the puck.
+
+
+
+    //function connecting the puck to the device.
+    //flashing the LED2(green) every 200 millisecond for 5 seconds
+    function connect(){
+
+      Puck.write("LED2.set();\n");
+
+    }
+
+    //function generating the unique code
+    //seting the input field. 
+    function generateCode(){
+
+      code = Math.random().toString(36).substr(2, 5);
+    
+      document.getElementById('codeTxt').value = code;
+
+    }
+
+    //function starting the advertisment. 
+    //closing established connection to allow advertising.
+    function sendCode(){
+
+      Puck.write("setTimeout('NRF.setAdvertising([beacon.get(`RegFinished`)]);', 600000)\nNRF.setAdvertising([beacon.get(`CIpka`)]);\n");
+
+      setTimeout(startRegistration, 10000);
+    }
+
+    function startRegistration(){
+
+      Puck.write("digitalWrite(LED3,1);\n digitalWrite(LED2, 0);\n");
+
+      setTimeout(closeCon, 10000);
+
+    }
+
+    function closeCon(){
+
+      Puck.close();
+
+    }
+
+</script>
+  
+<script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyBAV157BePawASuItu_Ycvv8p96SQcuFVg",
+    authDomain: "osattendance-352c4.firebaseapp.com",
+    databaseURL: "https://osattendance-352c4.firebaseio.com",
+    projectId: "osattendance-352c4",
+    storageBucket: "osattendance-352c4.appspot.com",
+    messagingSenderId: "91858851284"
+  };
+  firebase.initializeApp(config);
+</script>
+<script src="index.js"></script>
+
+</body>
+</html>
